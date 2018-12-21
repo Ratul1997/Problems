@@ -1,10 +1,10 @@
-///unsloved
-
+//unsloved
 #include <bits/stdc++.h>
 #define null -1
 using namespace std;
 
-bool articulationPoint[1005],visited[1005],back_edges[1005][1005];
+bool articulationPoint[1005],visited[1005];
+int back_edges[1005][1005];
 int low[1005],dist[1005], parent[1005];
 int times=0;
 vector<int> graph[1005];
@@ -23,7 +23,7 @@ void findBridge(int start){
 		if(to == parent[start])continue;
 		if(visited[to]){
 			low[start] = min(low[start], dist[to]);
-			back_edges[start][to]=true;
+			back_edges[start][to]=0;
 		}
 		if(!visited[to]){
 
@@ -34,7 +34,7 @@ void findBridge(int start){
 			low[start]= min( low[start] , low[to] );
 
 			if(dist[start] <= low[to]){
-				back_edges[start][to]=true;
+				back_edges[start][to]=0;
 			}
 		}
 		
@@ -64,6 +64,7 @@ int main(){
 			cin>>u>>v;
 			graph[u].push_back(v);
 			graph[v].push_back(u);
+			back_edges[u][v]=back_edges[v][u]=1;
 			
 		}
 		for(int i=1 ;i<=n;i++){
@@ -74,9 +75,20 @@ int main(){
 			cout<<endl;
 		}
 
+
+		for(int i=1 ;i<=n;i++){
+			cout<<i<<"->";
+			for(int j=1 ; j<=n ;j++){
+				if(back_edges[i][j])cout<<j<<" ";
+			
+			}
+			cout<<endl;
+		}
+
 		for(int i=1;i<=n;i++){
 			if(!visited[i])findBridge(i);
 		}
+
 		cout<<++test<<endl<<endl;
 		for(int i=1 ;i<=n;i++){
 			cout<<i<<"->";
@@ -86,9 +98,19 @@ int main(){
 			}
 			cout<<endl;
 		}
+
+		for(int i=1 ;i<=n;i++){
+			cout<<i<<"->";
+			for(int j=1 ; j<=n ;j++){
+				if(back_edges[i][j])cout<<j<<" ";
+			}
+			cout<<endl;
+		}
+
+
 		for(int i=1; i<=n ;i++){
 			for(auto to : graph[i]){
-				if(!back_edges[i][to]){
+				if(back_edges[i][to]){
 					cout<<i<<" "<<to<<endl;
 				}
 			}
