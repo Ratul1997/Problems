@@ -70,7 +70,7 @@ string maximum(string a, string b){
 	return a;
 }
 int main(){
-	freopen("input.txt","r",stdin);
+	//freopen("input.txt","r",stdin);
 	//freopen("output.txt","w",stdout);
 	
 	int n,count = 0;
@@ -110,12 +110,9 @@ int main(){
 				else{
 					mul = multiply(mul,num);
 				}
-				cout<<mul<<" ";
+				ans = maximum(ans, mul);
 
 			}
-			//cout<<"mul "<<mul<<endl;
-			ans = maximum(ans, mul);
-			//cout<<ans<<endl;
 		}
 		cout<<ans<<endl;
 	}
