@@ -11,28 +11,28 @@ int DNA2(string parent , string child){
 
 	int temp[2][m+1];
 	int maximum = -INF;
-	
+
 	int flag , previous;
 	queue<int>q;
 	for(int i=0 ; i<=n; i++){
 
 		for(int j = 0; j<=m ;j++){
-			
+
 			if(i == 0 || j== 0){
-				if(i == 0){	 
+				if(i == 0){
 					q.push(0);
 				}
 				else if(j == 0 ){
 					q.push(0);
 					previous = i*GAP;
-				}	
+				}
 			}
 			else{
 
 				if(parent[i-1] == child[j-1]){
 					int diag = q.front();
 					q.pop();
-
+					cout<<i<<" "<<j<<" "<<parent[i-1]<<" "<<child[j-1]<<" "<<diag<<endl;
 					previous = diag+1 ;
 					q.push(previous);
 				}

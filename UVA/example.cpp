@@ -6,29 +6,37 @@
 using namespace std;
 
 
-string child = "TTATTCTTGATTCGATATTGATTA";
-string parent= "ATCAATCAGTTAGGGGATACATAT";
+string child = "abca";
+string parent= "abdcad";
+int temporary ;
+void showQueue(queue<int>pq){
+	while(!pq.empty()){
+		cout<<pq.front()<<" ";
+		pq.pop();
+	}
+	cout<<endl;
+}
 int DNA2(string parent , string child){
 	int n = parent.size();
 	int m = child.size();
 
 	int temp[2][m+1];
 	int maximum = -INF;
-	
+
 	int flag , previous;
 	queue<int>q;
 	for(int i=0 ; i<=n; i++){
 
 		for(int j = 0; j<=m ;j++){
-			
+
 			if(i == 0 || j== 0){
-				if(i == 0){	 
-					q.push(j*GAP);
+				if(i == 0){
+					q.push(0);
 				}
 				else if(j == 0 ){
-					q.push(i*GAP);
+					q.push(0);
 					previous = i*GAP;
-				}	
+				}
 			}
 			else{
 
@@ -36,8 +44,7 @@ int DNA2(string parent , string child){
 					int diag = q.front();
 					q.pop();
 
-					previous = diag+MATCH ;
-					maximum = max(maximum , previous );
+					previous = diag+1 ;
 					q.push(previous);
 				}
 				else {
@@ -45,9 +52,8 @@ int DNA2(string parent , string child){
 					q.pop();
 
 					int vertical = q.front();
-					int t =max( previous+GAP, max(diag+MIS , vertical+GAP));
+					int t =max(previous, vertical);
 
-					maximum = max(maximum , t);
 					previous = t;
 					q.push(t);
 				}
@@ -56,41 +62,53 @@ int DNA2(string parent , string child){
 					q.pop();
 				}
 			}
+			//showQueue(q);
+		}
+    showQueue(q);
+	}
+
+	return q.back();
+}
+int check(string parent, string child){
+
+	//cout<<parent<<" "<<child<<" ";
+	int j =0,i;
+	for( i= temporary ;i<parent.size() && j<child.size(); i++){
+
+        cout<<parent[i];
+		if(parent[i] == child[j] ){
+	//		cout<<i<<" "<<j<<" ";
+	//		cout<<child[j];
+			temporary = i;
+			j++;
 		}
 	}
-	while(!q.empty()){
-		maximum = max(maximum, q.front());
-		q.pop();
-	}
-	return maximum;
+	cout<<endl;
+	//cout<<"  j = "<<j<<" "<<temporary<<endl;
+	return j;
 }
-int DNA(int start , int end_number, int size ){
-	
-	//cout<<start<<" "<<end_number<<endl;
-	
-	string s(child.begin()+start, child.begin()+end_number+1);
-	if(abs(end_number-start)<=10){
-		cout<<s<<" "<<DNA2(parent, s )<<endl;
-		return DNA2(parent, s);
-	}
-	
-	int mid1 = (end_number+start)/3;
+int DNA(int start , int end_number){
 
-	return DNA(start, mid1, size)+DNA(mid1+1, end_number, size);
+	//cout<<start<<" "<<end_number<<endl;
+
+	string s(child.begin()+start, child.begin()+end_number+1);
+	if(abs(end_number-start)<=4){
+		string pr(parent.begin()+temporary , parent.end());
+
+		return check(parent, s );
+	}
+
+	int mid1 = (end_number+start)/2;
+
+	return DNA(start, mid1)+DNA(mid1+1, end_number);
 }
 
 
 int main(){
-	freopen("input.txt","r",stdin);
+	//freopen("input.txt","r",stdin);
 	//freopen("output.txt","w",stdout);
-	cout<<child.size()<<endl;
-	cout<<DNA(0,child.size(), child.size()/3)<<endl;
-	string s1,s2;
-	    while(getline(cin,s1)&& getline(cin,s2))
-	    {
-	        cout<<DNA2(s1,s2)<<endl;
-	        s1.clear();
-	        s2.clear();
-	    }
+	//cout<<child.size()<<endl;
+	cout<<DNA2(parent, child)<<endl;
+	//cout<<DNA(0,child.size())<<endl;
 
 }
